@@ -26,7 +26,7 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.RobotCentric drive = new SwerveRequest.RobotCentric()
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.Velocity); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -38,7 +38,11 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
+//private final SendableChooser<Command> autoChooser;
+
     public RobotContainer() {
+        //autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        //SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
     }
 
@@ -74,9 +78,9 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Reset the field-centric heading on left bumper press.
-       // joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedRobotCentric));
+       joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        drivetrain.registerTelemetry(logger::telemeterize);
+        //drivetrain.registerTelemetry(logger::telemeterize);
 
         // While the left bumper on operator controller is held, intake Fuel
          joystick.leftBumper().whileTrue(new Intake(fuelSubsystem));
@@ -96,23 +100,10 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
         fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
 
     }
-/* 
-    public Command getAutonomousCommand() {
-         // Simple drive forward auton
-        final var idle = new SwerveRequest.Idle();
-        return Commands.sequence(
-            // Reset our field centric heading to match the robot
-            // facing away from our alliance station wall (0 deg).
-            drivetrain.runOnce(() -> drivetrain.seedRobotCentric(Rotation2d.kZero)),
-            // Then slowly drive forward (away from us) for 5 seconds.
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.5)
-                    .withVelocityY(0)
-                    .withRotationalRate(0)
-            )
-            .withTimeout(5.0),
-            // Finally idle for the rest of auton
-            drivetrain.applyRequest(() -> idle)
-        );
-    } */
+ 
+    
+    //public Command getAutonomousCommand() {
+        /* Run the path selected from the auto chooser */
+        //return autoChooser.getSelected();
+    //} 
 }
