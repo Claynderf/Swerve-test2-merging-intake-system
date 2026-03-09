@@ -37,7 +37,7 @@ public class CANFuelSubsystem extends SubsystemBase {
     // the config to the controller
     SparkMaxConfig feederConfig = new SparkMaxConfig();
     feederConfig.smartCurrentLimit(FEEDER_MOTOR_CURRENT_LIMIT)
-      .idleMode(SparkBaseConfig.IdleMode.kCoast);
+      .idleMode(SparkBaseConfig.IdleMode.kBrake);
     feederRoller.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     // create the configuration for the launcher roller, set a current limit, set
     // the motor to inverted so that positive values are used for both intaking and

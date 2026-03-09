@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import static frc.robot.Constants.FuelConstants.INTAKING_FEEDER_VOLTAGE;
-import static frc.robot.Constants.FuelConstants.INTAKING_LAUNCHER_VOLTAGE;
 import frc.robot.subsystems.CANFuelSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -26,7 +25,8 @@ public class Intake extends Command {
   @Override
   public void initialize() {
     fuelSubsystem
-        .setIntakeLauncherRoller(SmartDashboard.getNumber("Intaking intake roller value", INTAKING_LAUNCHER_VOLTAGE));
+        .setIntakeLauncherRoller(//SmartDashboard.getNumber("Intaking intake roller value", INTAKING_LAUNCHER_VOLTAGE) 
+        0);
     fuelSubsystem.setFeederRoller(-SmartDashboard.getNumber("Intaking feeder roller value", INTAKING_FEEDER_VOLTAGE));
   }
 
