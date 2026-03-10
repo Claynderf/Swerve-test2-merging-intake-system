@@ -95,7 +95,7 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
         // Reset the field-centric heading on left bumper press.
        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        //drivetrain.registerTelemetry(logger::telemeterize);
+        drivetrain.registerTelemetry(logger::telemeterize);
 
         // While the left bumper on operator controller is held, intake Fuel
          joystick.leftBumper().whileTrue(new Intake(fuelSubsystem));
