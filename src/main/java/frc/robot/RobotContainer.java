@@ -49,15 +49,15 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        autoChooser = AutoBuilder.buildAutoChooser("Forward-Auto");
-        SmartDashboard.putData("Auto Mode", autoChooser);
-        configureBindings();
-
         // Register Named Commands
         NamedCommands.registerCommand("Shoot", new LaunchSequence(fuelSubsystem));
 
+        configureBindings();
+
+        autoChooser = AutoBuilder.buildAutoChooser("Forward-Auto");
+        SmartDashboard.putData("Auto Mode", autoChooser);
+
         CameraServer.startAutomaticCapture();
-        
         
     }
 
