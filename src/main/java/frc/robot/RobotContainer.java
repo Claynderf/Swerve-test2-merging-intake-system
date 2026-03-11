@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.LaunchStop;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -30,8 +31,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
 public class RobotContainer {
-    private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 0.25 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.25).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -51,6 +52,7 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
     public RobotContainer() {
         // Register Named Commands
         NamedCommands.registerCommand("Shoot", new LaunchSequence(fuelSubsystem));
+        NamedCommands.registerCommand("StopShoot", new LaunchStop(fuelSubsystem));
 
         configureBindings();
 
