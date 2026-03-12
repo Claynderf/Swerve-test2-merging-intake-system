@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
-import frc.robot.commands.LaunchStop;
+import frc.robot.commands.AutoLaunch;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -52,7 +52,7 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
     public RobotContainer() {
         // Register Named Commands
         NamedCommands.registerCommand("Shoot", new LaunchSequence(fuelSubsystem));
-        NamedCommands.registerCommand("StopShoot", new LaunchStop(fuelSubsystem));
+        NamedCommands.registerCommand("AutoLaunch", new AutoLaunch(fuelSubsystem));
 
         configureBindings();
 

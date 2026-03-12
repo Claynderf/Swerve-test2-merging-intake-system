@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CANFuelSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class LaunchStop extends Command {
+public class StopLaunch extends Command {
   /** Creates a new Intake. */
 
   CANFuelSubsystem fuelSubsystem;
 
-  public LaunchStop(CANFuelSubsystem fuelSystem) {
+  public StopLaunch(CANFuelSubsystem fuelSystem) {
     addRequirements(fuelSystem);
     this.fuelSubsystem = fuelSystem;
   }
@@ -22,14 +22,16 @@ public class LaunchStop extends Command {
   // appropriate values for intaking
   @Override
   public void initialize() {
-    fuelSubsystem.setIntakeLauncherRoller(0);
-    fuelSubsystem.setFeederRoller(0);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled. This
   // command doesn't require updating any values while running
   @Override
   public void execute() {
+    fuelSubsystem
+        .setIntakeLauncherRoller(0);
+    fuelSubsystem.setFeederRoller(0);
   }
 
   // Called once the command ends or is interrupted. Stop the rollers

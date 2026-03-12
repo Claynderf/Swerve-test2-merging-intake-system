@@ -5,21 +5,27 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Forward"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoLaunch"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 10.0
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "StopShoot"
+            "pathName": "Backward"
           }
         }
       ]
