@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoLaunch;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
-import frc.robot.commands.AutoLaunch;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -95,7 +95,7 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Reset the field-centric heading on left bumper press.
-       joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+       joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -107,6 +107,15 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
         // While the A button is held on the operator controller, eject fuel back out
          // the intake
         joystick.x().whileTrue(new Eject(fuelSubsystem));
+
+        joystick.y().whileTrue(
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-LimelightHelpers.getTY("limelight") * -0.1) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-LimelightHelpers.getTX("limelight") * -0.05) // Drive counterclockwise with negative X (left)
+            )
+            );
+        
         // Set the default command for the drive subsystem to the command provided by
         // factory with the values provided by the joystick axes on the driver
         // controller. The Y axis of the controller is inverted so that pushing the

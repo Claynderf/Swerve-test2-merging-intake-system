@@ -14,6 +14,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -30,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -264,6 +266,60 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return m_sysIdRoutineToApply.dynamic(direction);
     }
 
+    public void updateVisionFromLimelight(){
+        String limelightName = "limelight";
+        if(!LimelightHelpers.getTV(limelightName)){
+            return;
+        }
+
+        LimelightHelpers.PoseEstimate botPoseEstimate = 
+            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+
+            if (botPoseEstimate == null || botPoseEstimate.tagCount == 0) {
+                return;
+            }
+
+            //Ignore bad vision while rotating too fast
+            if (Math.abs(getState().Speeds.omegaRadiansPerSecond) > 2.0){
+                return;
+            }
+
+            double xyStdDev = 0.7;
+            double rotStdDev = 999999.0;
+
+            if (botPoseEstimate.tagCount >=2) {
+                xyStdDev = 0.3;
+                rotStdDev = 1.0;
+            }
+
+            addVisionMeasurement(
+                botPoseEstimate.pose,
+                botPoseEstimate.timestampSeconds,
+                VecBuilder.fill(xyStdDev, xyStdDev, rotStdDev)
+            );
+    }
+
+    public boolean hasAprilTagTarget(){
+        return LimelightHelpers.getTV("limelight");
+    }
+
+    public double getAprilTagTX(){
+        return LimelightHelpers.getTX("Limelight");
+    }
+
+    public double getAprilTagTY(){
+        return LimelightHelpers.getTY("Limelight");
+    }
+
+    public boolean hasDesiredAprilTag() {
+        if (!LimelightHelpers.getTV("limelight")){
+            return false;
+        }
+        double tagID = LimelightHelpers.getFiducialID("limelight");
+
+        return tagID == 10 || tagID == 25;
+    }
+
     @Override
     public void periodic() {
         /*
@@ -284,7 +340,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
         
-        
+        updateVisionFromLimelight();
         
         field2d.setRobotPose(getState().Pose);
         SmartDashboard.putData("Field", field2d);

@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.subsystems.CANFuelSubsystem;
 
@@ -20,8 +19,7 @@ public class AutoLaunch extends SequentialCommandGroup {
     addCommands(
       Commands.sequence(
         new SpinUp(fuelSubsystem).withTimeout(FuelConstants.SPIN_UP_SECONDS),
-        new Launch(fuelSubsystem)),
-        new WaitCommand(5),
+        new Launch(fuelSubsystem)).withTimeout(5),
         new StopLaunch(fuelSubsystem)
       );
     
