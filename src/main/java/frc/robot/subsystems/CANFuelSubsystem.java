@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.FuelConstants.FEEDER_MOTOR_CURRENT_LIMIT;
 import static frc.robot.Constants.FuelConstants.FEEDER_MOTOR_ID;
+import static frc.robot.Constants.FuelConstants.INTAKE_LAUNCHER_MOTOR_2;
 import static frc.robot.Constants.FuelConstants.INTAKE_LAUNCHER_MOTOR_ID;
 import static frc.robot.Constants.FuelConstants.INTAKING_FEEDER_VOLTAGE;
 import static frc.robot.Constants.FuelConstants.INTAKING_LAUNCHER_VOLTAGE;
@@ -26,13 +27,14 @@ import static frc.robot.Constants.FuelConstants.SPIN_UP_FEEDER_VOLTAGE;
 public class CANFuelSubsystem extends SubsystemBase {
   private final SparkMax feederRoller;
   private final SparkMax intakeLauncherRoller;
+  private final SparkMax intakeLauncherRoller2;
 
   /** Creates a new CANBallSubsystem. */
   public CANFuelSubsystem() {
     // create brushed motors for each of the motors on the launcher mechanism
     intakeLauncherRoller = new SparkMax(INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushless);
     feederRoller = new SparkMax(FEEDER_MOTOR_ID, MotorType.kBrushless);
-
+    intakeLauncherRoller2 = new SparkMax(INTAKE_LAUNCHER_MOTOR_2, MotorType.kBrushless);
     // create the configuration for the feeder roller, set a current limit and apply
     // the config to the controller
     SparkMaxConfig feederConfig = new SparkMaxConfig();
@@ -46,6 +48,12 @@ public class CANFuelSubsystem extends SubsystemBase {
     launcherConfig.inverted(true).idleMode(SparkBaseConfig.IdleMode.kBrake);
     launcherConfig.smartCurrentLimit(LAUNCHER_MOTOR_CURRENT_LIMIT);
     intakeLauncherRoller.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    
+    SparkMaxConfig intakeLauncherRoller2Config = new SparkMaxConfig();
+    //intakeLauncherRoller2Config.follow(intakeLauncherRoller);
+    intakeLauncherRoller2Config.smartCurrentLimit(LAUNCHER_MOTOR_CURRENT_LIMIT);
+    intakeLauncherRoller2Config.inverted(false).idleMode(SparkBaseConfig.IdleMode.kBrake);
+    intakeLauncherRoller2.configure(intakeLauncherRoller2Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     // put default values for various fuel operations onto the dashboard
     // all commands using this subsystem pull values from the dashbaord to allow
@@ -56,7 +64,13 @@ public class CANFuelSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Launching feeder roller value", LAUNCHING_FEEDER_VOLTAGE);
     SmartDashboard.putNumber("Launching launcher roller value", LAUNCHING_LAUNCHER_VOLTAGE);
     SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
+    
   }
+    /* 
+    SparkMaxConfig intakeLauncherRoller2Config = new SparkMaxConfig();
+    intakeLauncherRoller2Config.follow.(intakeLauncherRoller);
+    intakeLauncherRoller2.follow(intakeLauncherRoller);
+    */
 
  /*  // A method to set the voltage of the intake roller
   public void setIntakeLauncherRoller(double voltage) {
@@ -69,6 +83,7 @@ public class CANFuelSubsystem extends SubsystemBase {
   }*/
   public void setIntakeLauncherRoller(double power) {
     intakeLauncherRoller.set(power);
+    intakeLauncherRoller2.set(power);
   }
 
   // A method to set the voltage of the intake roller
@@ -80,6 +95,7 @@ public class CANFuelSubsystem extends SubsystemBase {
   public void stop() {
     feederRoller.set(0);
     intakeLauncherRoller.set(0);
+    intakeLauncherRoller2.set(0);
   }
 
   @Override
