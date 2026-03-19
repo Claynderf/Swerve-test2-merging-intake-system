@@ -10,7 +10,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.math.geometry.Rotation2d;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -83,9 +82,7 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
         );
 
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -98,6 +95,7 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
        joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+        joystick.y().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         // While the left bumper on operator controller is held, intake Fuel
          joystick.leftBumper().whileTrue(new Intake(fuelSubsystem));
@@ -108,13 +106,19 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
          // the intake
         joystick.x().whileTrue(new Eject(fuelSubsystem));
 
-        joystick.y().whileTrue(
-            drivetrain.applyRequest(() ->
+        
+        joystick.b().whileTrue(
+            
+                drivetrain.applyRequest(() ->
                 drive.withVelocityX(-LimelightHelpers.getTY("limelight") * -0.1) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withVelocityY(LimelightHelpers.getTX("limelight") * 0.05) // Drive left with negative X (left)
                     .withRotationalRate(-LimelightHelpers.getTX("limelight") * -0.05) // Drive counterclockwise with negative X (left)
             )
             );
+
+            
+            //joystick.b().whileTrue(new AlignToAprilTag(drivetrain));
+           
         
         // Set the default command for the drive subsystem to the command provided by
         // factory with the values provided by the joystick axes on the driver

@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Forward"
+            "pathName": "New Path"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "AutoLaunch"
           }
         }
       ]

@@ -14,16 +14,16 @@ public class AlignToAprilTag extends Command {
 
     private final SwerveRequest.RobotCentric driveRequest = new SwerveRequest.RobotCentric()
           .withDriveRequestType(DriveRequestType.Velocity);
-  private static final double kP_turn = 0.1; 
-  private static final double kP_forward = 0.03;
+  private static final double kP_turn = 0.05; 
+  private static final double kP_forward = 0.08;
 
   // tx = left/right error, should end at 0
    private static final double targetTX = 0.0;
 
   // ty = how high/low target appears; tune this for desired stopping distance
-   private static final double targetTY = -2.0;
+   private static final double targetTY = 5.0;
 
-  private final double maxSpeed = 0.25 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+  private final double maxSpeed = 0.5 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
   private final double maxTurnRate = 1.5;
 
   public AlignToAprilTag(CommandSwerveDrivetrain drivetrain) {
@@ -57,7 +57,7 @@ public class AlignToAprilTag extends Command {
 
  drivetrain.setControl(
  driveRequest
- .withVelocityX(forwardOutput)
+ .withVelocityX(-forwardOutput)
  .withVelocityY(0.0)
  .withRotationalRate(turnOutput)
  );
