@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right - Outpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Outpost - Middle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoLaunch10Sec"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle - End Right"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

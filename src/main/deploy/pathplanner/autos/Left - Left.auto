@@ -7,19 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Forward"
+            "pathName": "Left - Outpost"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "AutoLaunch"
+            "waitTime": 5.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Backward"
+            "pathName": "Outpost - Middle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoLaunch10Sec"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle - End Left"
           }
         }
       ]

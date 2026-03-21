@@ -19,7 +19,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AutoLaunch;
+import frc.robot.commands.AutoLaunch10Sec;
+import frc.robot.commands.AutoLaunch5Sec;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
@@ -30,8 +31,10 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
 public class RobotContainer {
-    private double MaxSpeed = 0.25 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.25).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 0.75 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+
+    //private final SlewRateLimiter xLimiter = new SlewRateLimiter(3); 
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -50,14 +53,16 @@ private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
 
     public RobotContainer() {
         // Register Named Commands
-        NamedCommands.registerCommand("Shoot", new LaunchSequence(fuelSubsystem));
-        NamedCommands.registerCommand("AutoLaunch", new AutoLaunch(fuelSubsystem));
+        
+        NamedCommands.registerCommand("AutoLaunch5Sec", new AutoLaunch5Sec(fuelSubsystem));
+        NamedCommands.registerCommand("AutoLaunch10Sec", new AutoLaunch10Sec(fuelSubsystem));
 
         configureBindings();
 
         autoChooser = AutoBuilder.buildAutoChooser("Forward-Auto");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
+        CameraServer.startAutomaticCapture();
         CameraServer.startAutomaticCapture();
         
     }

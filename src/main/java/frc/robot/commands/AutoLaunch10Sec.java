@@ -11,15 +11,15 @@ import frc.robot.subsystems.CANFuelSubsystem;
 
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class AutoLaunch extends SequentialCommandGroup {
+public class AutoLaunch10Sec extends SequentialCommandGroup {
   /** Creates a new LaunchSequence. */
-  public AutoLaunch(CANFuelSubsystem fuelSubsystem) {
+  public AutoLaunch10Sec(CANFuelSubsystem fuelSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       Commands.sequence(
         new SpinUp(fuelSubsystem).withTimeout(FuelConstants.SPIN_UP_SECONDS),
-        new Launch(fuelSubsystem)).withTimeout(5),
+        new Launch(fuelSubsystem)).withTimeout(10),
         new StopLaunch(fuelSubsystem)
       );
     

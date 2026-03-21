@@ -7,13 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Front-Back-Swerve"
+            "pathName": "Center - Outpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 10.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Forward"
+            "pathName": "Outpost - Middle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoLaunch10Sec"
           }
         }
       ]

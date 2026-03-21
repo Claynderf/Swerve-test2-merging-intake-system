@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import static frc.robot.Constants.FuelConstants.LAUNCHING_FEEDER_VOLTAGE;
 import static frc.robot.Constants.FuelConstants.LAUNCHING_LAUNCHER_VOLTAGE;
+import static frc.robot.Constants.FuelConstants.ballMotor_VOLTAGE;
+
 import frc.robot.subsystems.CANFuelSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -29,6 +31,7 @@ public class Launch extends Command {
         .setIntakeLauncherRoller(
             SmartDashboard.getNumber("Launching launcher roller value", LAUNCHING_LAUNCHER_VOLTAGE));
     fuelSubsystem.setFeederRoller(SmartDashboard.getNumber("Launching feeder roller value", LAUNCHING_FEEDER_VOLTAGE));
+    fuelSubsystem.setBallMotor(SmartDashboard.getNumber("BallMotor value", ballMotor_VOLTAGE));
   }
 
   // Called every time the scheduler runs while the command is scheduled. This
